@@ -657,34 +657,69 @@
     font-weight: 600;
   }
 
-  .location-map {
-    width: 100%;
-    height: 380px;
-    background: var(--steel);
+  /* COBERTURA: componente propio, independiente de Google Maps */
+  .coverage-panel {
+    min-width: 0;
+    min-height: 380px;
+    padding: 38px 34px;
+    background:
+      radial-gradient(circle at 95% 8%, rgba(204,255,0,.13), transparent 35%),
+      linear-gradient(145deg, #202422, #141719 65%, #101111);
+    border: 1px solid rgba(204,255,0,.20);
+    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
     position: relative;
     overflow: hidden;
-    clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 20px, 100% 100%, 0 100%);
   }
-
-  .location-map iframe {
-    width: 100%;
-    height: 100%;
-    border: none;
-    filter: grayscale(70%) invert(5%) contrast(1.2);
+  .coverage-panel::before {
+    content: '';
+    position:absolute; inset:0;
+    background-image: linear-gradient(rgba(204,255,0,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(204,255,0,.035) 1px,transparent 1px);
+    background-size: 34px 34px;
+    pointer-events:none;
   }
-
-  .map-overlay-tag {
-    position: absolute;
-    top: 16px; left: 16px;
-    background: var(--lime);
-    color: var(--black);
-    font-family: 'Barlow Condensed', sans-serif;
-    font-weight: 700;
-    font-size: 11px;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    padding: 6px 14px;
-    z-index: 2;
+  .coverage-panel > * {position:relative; z-index:1;}
+  .coverage-eyebrow {
+    color: var(--lime); font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase; font-size:12px; font-weight:700;
+    letter-spacing:2.3px; display:flex; align-items:center; gap:10px;
+  }
+  .coverage-eyebrow::before {content:''; display:block; width:25px; height:2px; background:var(--lime);}
+  .coverage-title {
+    margin:22px 0 13px; font-family:'Barlow Condensed',sans-serif;
+    text-transform:uppercase; font-weight:900;
+    color:var(--white); line-height:.99;
+    font-size:clamp(38px,4vw,52px);
+  }
+  .coverage-title span {color:var(--lime);}
+  .coverage-desc {font-size:14px; line-height:1.65; color:#b8bbba; max-width:440px;}
+  .coverage-areas {list-style:none; margin:26px 0 25px; padding:0; display:flex; flex-wrap:wrap; gap:9px;}
+  .coverage-areas li {
+    padding:9px 13px; border:1px solid rgba(204,255,0,.30);
+    color:#f0f2ea; background:rgba(204,255,0,.065);
+    font-family:'Barlow Condensed',sans-serif; font-size:15px;
+    font-weight:700; letter-spacing:.6px;
+  }
+  .coverage-modes {display:grid; grid-template-columns:1fr 1fr; gap:12px; margin:0 0 24px;}
+  .coverage-mode {background:rgba(0,0,0,.25); border:1px solid rgba(255,255,255,.10); padding:17px 15px;}
+  .coverage-mode .mode-icon {font-size:21px; display:block; margin-bottom:8px;}
+  .coverage-mode strong {display:block; color:#f5f0e8; font-size:14px; line-height:1.35; margin-bottom:7px;}
+  .coverage-mode small {display:block; color:#b5b5b5; font-size:12px; line-height:1.5;}
+  .coverage-cta {
+    display:inline-flex; align-items:center; justify-content:center; gap:9px;
+    background:var(--lime); color:#0a0a0a; padding:13px 18px;
+    font-family:'Barlow Condensed',sans-serif; text-transform:uppercase;
+    font-size:14px; font-weight:900; letter-spacing:1px;
+    text-decoration:none; transition:filter .2s ease,transform .2s ease;
+  }
+  .coverage-cta:hover {filter:brightness(1.08); transform:translateY(-2px);}
+  .coverage-note {margin-top:14px; color:#9faaa5; font-size:12px; line-height:1.5;}
+  @media (max-width:768px) {
+    .coverage-panel {padding:29px 23px; min-height:0;}
+    .coverage-title {font-size:clamp(37px,10vw,50px);}
+  }
+  @media (max-width:430px) {
+    .coverage-modes {grid-template-columns:1fr;}
+    .coverage-cta {width:100%;}
   }
 
   /* CTA FINAL */
@@ -907,8 +942,6 @@
     .stats-inner { flex-wrap: wrap; gap: 16px; padding: 28px 20px; }
     .stat { min-width: 45%; }
 
-    /* MAPA */
-    .location-map { height: 320px; }
 
     /* CTA FINAL */
     .cta-title { font-size: clamp(36px, 9vw, 48px) !important; }
@@ -1197,24 +1230,35 @@
 <section id="ubicacion">
 <div class="location-layout">
 <div class="location-info reveal">
-<div class="section-tag">Dónde estamos</div>
+<div class="section-tag">Dónde atendemos</div>
 <h2 class="section-title">PLACILLA<br/><span class="accent">VALPARAÍSO</span></h2>
 <p style="color:#999; font-size:15px; line-height:1.7; margin-top:16px;">Atendemos principalmente en Placilla y sectores cercanos de la Región de Valparaíso. Cada servicio requiere coordinación previa de lugar, disponibilidad, acceso y condiciones de trabajo.</p>
-<div class="location-address"><p><strong>📍 Zona de atención</strong></p>
-<p>Placilla, Valparaíso y sectores cercanos · Chile</p>
+<div class="location-address">
+<p><strong>📍 Zona de atención</strong></p>
+<p>Placilla, Curauma, Valparaíso y Viña del Mar · Chile</p>
 <p style="margin-top:12px;"><strong>🕐 Atención</strong></p>
 <p>Solo con coordinación y reserva previa</p>
 <p style="margin-top:12px;"><strong>📱 WhatsApp de contacto</strong></p>
 <p><a href="tel:+56978610060" style="color:#fff; text-decoration:none;">+56 9 7861 0060</a></p>
-<p style="font-size:13px; color:#999;">Número de contacto temporal de Promo Wash</p></div>
-<a href="https://maps.app.goo.gl/cDTdSB88EJNDbASz6" style="display:inline-flex; align-items:center; gap:8px; margin-top:24px; color:var(--lime); text-decoration:none; font-family:'Barlow Condensed', sans-serif; font-weight:600; font-size:14px; letter-spacing:1.5px; text-transform:uppercase; border-bottom:1px solid rgba(204,255,0,0.3); padding-bottom:4px;" target="_blank">
-        📍 Ver en Google Maps
-      </a>
+<p style="font-size:13px; color:#999;">Número de contacto temporal de Promo Wash</p>
 </div>
-<div class="location-map reveal">
-<div class="map-overlay-tag">Placilla · Valparaíso</div>
-<iframe allowfullscreen="" loading="lazy" src="https://www.google.com/maps?q=Promo+Wash,-33.1145333,-71.5676947&amp;hl=es&amp;z=17&amp;output=embed" title="Promo Wash - Placilla, Valparaíso">
-</iframe>
+</div>
+<div class="coverage-panel reveal" aria-label="Cobertura de servicio de Promo Wash">
+<div class="coverage-eyebrow">Cobertura y coordinación</div>
+<h3 class="coverage-title">TU CABINA,<br/><span>EN BUENAS MANOS</span></h3>
+<p class="coverage-desc">Limpieza y detallado interior de cabinas de camiones. Coordinamos el lugar y las condiciones de trabajo antes de confirmar cada servicio.</p>
+<ul class="coverage-areas" aria-label="Zonas de atención">
+<li>Placilla</li>
+<li>Curauma</li>
+<li>Valparaíso</li>
+<li>Viña del Mar</li>
+</ul>
+<div class="coverage-modes">
+<div class="coverage-mode"><span class="mode-icon" aria-hidden="true">🚛</span><strong>Recepción coordinada en Placilla</strong><small>Solo con espacio y horario confirmados previamente.</small></div>
+<div class="coverage-mode"><span class="mode-icon" aria-hidden="true">📍</span><strong>En instalaciones del cliente</strong><small>Sujeto a evaluación de ubicación, acceso y condiciones del lugar.</small></div>
+</div>
+<a class="coverage-cta" href="https://wa.me/56978610060?text=Hola%20Promo%20Wash.%20Quiero%20cotizar%20el%20detallado%20interior%20de%20una%20cabina%20de%20camion.%20%C2%BFPuedo%20enviar%20fotos%3F" rel="noopener noreferrer" target="_blank">Consultar disponibilidad <span aria-hidden="true">↗</span></a>
+<p class="coverage-note">Dirección exacta y disponibilidad informadas al confirmar el servicio. No realizamos lavado exterior de camiones.</p>
 </div>
 </div>
 </section>
